@@ -1,0 +1,20 @@
+[INFO] [08:47:16.177] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getConnectionUrlWithSchema:70 --> getConnectionUrlWithSchema, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
+[INFO] [08:47:16.181] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getTableNames:34 --> getTableNames, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
+[INFO] [08:47:17.039] [JavaFX Application Thread] [] com.mybatis.generator.util.ConfigHelper.loadGeneratorConfigs:166 --> sql: 
+[INFO] [08:47:19.132] [JavaFX Application Thread] [] com.mybatis.generator.util.ConfigHelper.loadGeneratorConfig:143 --> sql: 
+[INFO] [08:47:31.276] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getConnectionUrlWithSchema:70 --> getConnectionUrlWithSchema, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
+[INFO] [09:17:10.604] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getConnectionUrlWithSchema:70 --> getConnectionUrlWithSchema, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
+[INFO] [09:17:10.613] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getTableNames:34 --> getTableNames, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
+[INFO] [09:17:11.398] [JavaFX Application Thread] [] com.mybatis.generator.util.ConfigHelper.loadGeneratorConfigs:166 --> sql: 
+[INFO] [09:17:12.541] [JavaFX Application Thread] [] com.mybatis.generator.util.ConfigHelper.loadGeneratorConfig:143 --> sql: 
+[INFO] [09:17:20.651] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getConnectionUrlWithSchema:70 --> getConnectionUrlWithSchema, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
+[INFO] [09:51:55.982] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getConnectionUrlWithSchema:70 --> getConnectionUrlWithSchema, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
+[INFO] [09:51:55.991] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getTableNames:34 --> getTableNames, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
+[INFO] [09:51:56.640] [JavaFX Application Thread] [] com.mybatis.generator.util.ConfigHelper.loadGeneratorConfigs:166 --> sql: 
+[INFO] [09:51:57.423] [JavaFX Application Thread] [] com.mybatis.generator.util.ConfigHelper.loadGeneratorConfig:143 --> sql: 
+[INFO] [09:52:01.914] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getConnectionUrlWithSchema:70 --> getConnectionUrlWithSchema, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
+[INFO] [14:45:18.899] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getConnectionUrlWithSchema:70 --> getConnectionUrlWithSchema, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
+[INFO] [14:45:18.906] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getTableNames:34 --> getTableNames, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
+[INFO] [14:45:21.746] [JavaFX Application Thread] [] com.mybatis.generator.util.ConfigHelper.loadGeneratorConfigs:166 --> sql: 
+[INFO] [14:45:22.605] [JavaFX Application Thread] [] com.mybatis.generator.util.ConfigHelper.loadGeneratorConfig:143 --> sql: 
+[INFO] [14:45:38.635] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getConnectionUrlWithSchema:70 --> getConnectionUrlWithSchema, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
