@@ -1,5 +1,0 @@
-[INFO] [10:53:32.696] [JavaFX Application Thread] [] com.mybatis.generator.util.ConfigHelper.loadGeneratorConfigs:166 --> sql: 
-[INFO] [10:53:34.011] [JavaFX Application Thread] [] com.mybatis.generator.util.ConfigHelper.loadGeneratorConfig:143 --> sql: 
-[INFO] [10:53:35.176] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getConnectionUrlWithSchema:70 --> getConnectionUrlWithSchema, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
-[INFO] [10:53:35.177] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getTableNames:34 --> getTableNames, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
-[INFO] [10:53:40.839] [JavaFX Application Thread] [] com.mybatis.generator.util.DbUtil.getConnectionUrlWithSchema:70 --> getConnectionUrlWithSchema, connection url: jdbc:mysql://127.0.0.1:3306/sports?useUnicode=true&useSSL=false&characterEncoding=utf8
