@@ -2,9 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="src/lib/commons-beanutils-1.9.3.jar"/>
-	<classpathentry kind="lib" path="src/lib/commons-lang-2.6.jar"/>
 	<classpathentry kind="lib" path="src/lib/commons-lang3-3.5.jar"/>
-	<classpathentry kind="lib" path="src/lib/fastjson-1.2.22.jar"/>
 	<classpathentry kind="lib" path="src/lib/junit-4.12.jar"/>
 	<classpathentry kind="lib" path="src/lib/log4j-1.2.17.jar"/>
 	<classpathentry kind="lib" path="src/lib/logback-classic-1.1.8.jar"/>
@@ -16,6 +14,7 @@
 	<classpathentry kind="lib" path="src/lib/slf4j-log4j12-1.7.21.jar"/>
 	<classpathentry kind="lib" path="src/lib/sqlite-jdbc-3.15.1.jar"/>
 	<classpathentry kind="lib" path="src/lib/ant-1.9.7.jar"/>
+	<classpathentry kind="lib" path="src/lib/fastjson-1.2.23.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
