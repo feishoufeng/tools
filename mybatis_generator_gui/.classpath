@@ -8,13 +8,13 @@
 	<classpathentry kind="lib" path="src/lib/logback-classic-1.1.8.jar"/>
 	<classpathentry kind="lib" path="src/lib/logback-core-1.1.8.jar"/>
 	<classpathentry kind="lib" path="src/lib/mysql-connector-java-5.1.40.jar"/>
-	<classpathentry kind="lib" path="src/lib/ojdbc14.jar"/>
 	<classpathentry kind="lib" path="src/lib/postgresql-9.3-1102.jdbc41.jar"/>
 	<classpathentry kind="lib" path="src/lib/slf4j-api-1.7.21.jar"/>
 	<classpathentry kind="lib" path="src/lib/slf4j-log4j12-1.7.21.jar"/>
 	<classpathentry kind="lib" path="src/lib/sqlite-jdbc-3.15.1.jar"/>
 	<classpathentry kind="lib" path="src/lib/ant-1.9.7.jar"/>
 	<classpathentry kind="lib" path="src/lib/fastjson-1.2.23.jar"/>
+	<classpathentry kind="lib" path="src/lib/ojdbc6-11.1.0.7.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
