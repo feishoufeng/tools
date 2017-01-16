@@ -119,7 +119,7 @@ public class Context extends PropertyHolder {
         super();
 
         if (defaultModelType == null) {
-            this.defaultModelType = ModelType.CONDITIONAL;
+            this.defaultModelType = ModelType.HIERARCHICAL;
         } else {
             this.defaultModelType = defaultModelType;
         }

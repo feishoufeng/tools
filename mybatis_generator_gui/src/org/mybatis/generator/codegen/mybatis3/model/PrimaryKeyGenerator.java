@@ -74,7 +74,13 @@ public class PrimaryKeyGenerator extends AbstractJavaGenerator {
                 addDefaultConstructor(topLevelClass);
             }
         }
-
+        
+        List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
+        if (context.getPlugins().modelPrimaryKeyClassGenerated(
+                topLevelClass, introspectedTable)) {
+            answer.add(topLevelClass);
+        }
+        
         commentGenerator.addModelClassComment(topLevelClass, introspectedTable);
 
         for (IntrospectedColumn introspectedColumn : introspectedTable
@@ -109,11 +115,6 @@ public class PrimaryKeyGenerator extends AbstractJavaGenerator {
             }
         }
 
-        List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
-        if (context.getPlugins().modelPrimaryKeyClassGenerated(
-                topLevelClass, introspectedTable)) {
-            answer.add(topLevelClass);
-        }
         return answer;
     }
     

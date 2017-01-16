@@ -65,8 +65,8 @@ public class XMLMapperGenerator extends AbstractXmlGenerator {
 
 		context.getCommentGenerator().addRootComment(answer);
 
-		// addResultMapWithoutBLOBsElement(answer);
-		// addResultMapWithBLOBsElement(answer);
+		addResultMapWithoutBLOBsElement(answer);
+		addResultMapWithBLOBsElement(answer);
 		// addExampleWhereClauseElement(answer);
 		// addMyBatis3UpdateByExampleWhereClauseElement(answer);
 		addBaseColumnListElement(answer);

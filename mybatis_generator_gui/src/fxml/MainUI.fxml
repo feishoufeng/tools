@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.collections.*?>
-<?import com.zzg.mybatis.generator.model.*?>
+<?import com.mybatis.generator.model.*?>
 
-<BorderPane prefHeight="613.0" prefWidth="879.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zzg.mybatis.generator.controller.MainUIController">
+<BorderPane prefHeight="613.0" prefWidth="879.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mybatis.generator.controller.MainUIController">
     <top>
         <VBox>
             <children>
@@ -114,10 +114,10 @@
                                        </styleClass></Button>
                                           </children>
                                       </HBox>
-                                      <Label text="Model Package" GridPane.rowIndex="4" />
+                                      <Label text="Entity Package" GridPane.rowIndex="4" />
                                       <HBox alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="261.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                           <children>
-                                              <TextField fx:id="modelTargetPackage" prefHeight="27.0" prefWidth="248.0" promptText="com.example.model">
+                                              <TextField fx:id="modelTargetPackage" prefHeight="27.0" prefWidth="248.0" promptText="com.example.entity">
                                                   <HBox.margin>
                                                       <Insets right="5.0" />
                                                   </HBox.margin>
@@ -152,8 +152,9 @@
                                       <TextField fx:id="mappingTargetProject" promptText="src/main/resources" GridPane.columnIndex="3" GridPane.rowIndex="6" />
                               <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="7">
                                  <children>
-                                    <CheckBox fx:id="offsetLimitCheckBox" mnemonicParsing="false" selected="true" text="Pagination" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                                    <CheckBox fx:id="commentCheckBox" mnemonicParsing="false" selected="true" text="Use Column Comments As Java Model Comments" />
+                                    <CheckBox fx:id="offsetLimitCheckBox" mnemonicParsing="false" selected="true" text="分页" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                    <CheckBox fx:id="serializableCheckBox" mnemonicParsing="false" selected="true" text="序列化" />
+                                    <CheckBox fx:id="commentCheckBox" mnemonicParsing="false" selected="true" text="生成注释" />
                                  </children>
                               </HBox>
                               <Button mnemonicParsing="false" onAction="#openTableColumnCustomizationPage" text="Choose" GridPane.columnIndex="2" GridPane.rowIndex="2">

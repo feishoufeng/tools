@@ -15,7 +15,7 @@
  */
 package org.mybatis.generator.internal.types;
 
-import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,7 +29,6 @@ import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.internal.util.StringUtility;
-
 /**
  * 
  * @author Jeff Butler
@@ -58,7 +57,7 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
         typeMap.put(Types.BINARY, new JdbcTypeInformation("BINARY", //$NON-NLS-1$
                 new FullyQualifiedJavaType("byte[]"))); //$NON-NLS-1$
         typeMap.put(Types.BIT, new JdbcTypeInformation("BIT", //$NON-NLS-1$
-                new FullyQualifiedJavaType(Boolean.class.getName())));
+                new FullyQualifiedJavaType(Integer.class.getName())));
         typeMap.put(Types.BLOB, new JdbcTypeInformation("BLOB", //$NON-NLS-1$
                 new FullyQualifiedJavaType("byte[]"))); //$NON-NLS-1$
         typeMap.put(Types.BOOLEAN, new JdbcTypeInformation("BOOLEAN", //$NON-NLS-1$
@@ -72,7 +71,7 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
         typeMap.put(Types.DATE, new JdbcTypeInformation("DATE", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Date.class.getName())));
         typeMap.put(Types.DECIMAL, new JdbcTypeInformation("DECIMAL", //$NON-NLS-1$
-                new FullyQualifiedJavaType(BigDecimal.class.getName())));
+                new FullyQualifiedJavaType(Double.class.getName())));
         typeMap.put(Types.DISTINCT, new JdbcTypeInformation("DISTINCT", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Object.class.getName())));
         typeMap.put(Types.DOUBLE, new JdbcTypeInformation("DOUBLE", //$NON-NLS-1$
@@ -99,7 +98,7 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
         typeMap.put(Types.NULL, new JdbcTypeInformation("NULL", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Object.class.getName())));
         typeMap.put(Types.NUMERIC, new JdbcTypeInformation("NUMERIC", //$NON-NLS-1$
-                new FullyQualifiedJavaType(BigDecimal.class.getName())));
+                new FullyQualifiedJavaType(Double.class.getName())));
         typeMap.put(Types.OTHER, new JdbcTypeInformation("OTHER", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Object.class.getName())));
         typeMap.put(Types.REAL, new JdbcTypeInformation("REAL", //$NON-NLS-1$
@@ -107,15 +106,15 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
         typeMap.put(Types.REF, new JdbcTypeInformation("REF", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Object.class.getName())));
         typeMap.put(Types.SMALLINT, new JdbcTypeInformation("SMALLINT", //$NON-NLS-1$
-                new FullyQualifiedJavaType(Short.class.getName())));
+                new FullyQualifiedJavaType(Integer.class.getName())));
         typeMap.put(Types.STRUCT, new JdbcTypeInformation("STRUCT", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Object.class.getName())));
         typeMap.put(Types.TIME, new JdbcTypeInformation("TIME", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Date.class.getName())));
         typeMap.put(Types.TIMESTAMP, new JdbcTypeInformation("TIMESTAMP", //$NON-NLS-1$
-                new FullyQualifiedJavaType(Date.class.getName())));
+                new FullyQualifiedJavaType(Timestamp.class.getName())));
         typeMap.put(Types.TINYINT, new JdbcTypeInformation("TINYINT", //$NON-NLS-1$
-                new FullyQualifiedJavaType(Byte.class.getName())));
+                new FullyQualifiedJavaType(Integer.class.getName())));
         typeMap.put(Types.VARBINARY, new JdbcTypeInformation("VARBINARY", //$NON-NLS-1$
                 new FullyQualifiedJavaType("byte[]"))); //$NON-NLS-1$
         typeMap.put(Types.VARCHAR, new JdbcTypeInformation("VARCHAR", //$NON-NLS-1$

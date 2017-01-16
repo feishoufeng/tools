@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.collections.*?>
-<?import com.zzg.mybatis.generator.model.*?>
+<?import com.mybatis.generator.model.*?>
 
-<AnchorPane prefHeight="454.0" prefWidth="576.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zzg.mybatis.generator.controller.NewConnectionController">
+<AnchorPane prefHeight="454.0" prefWidth="576.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mybatis.generator.controller.NewConnectionController">
    <children>
       <GridPane alignment="CENTER_RIGHT" layoutX="49.0" layoutY="76.0" vgap="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
         <columnConstraints>

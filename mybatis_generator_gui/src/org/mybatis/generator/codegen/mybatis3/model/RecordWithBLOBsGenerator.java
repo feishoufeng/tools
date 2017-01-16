@@ -76,6 +76,12 @@ public class RecordWithBLOBsGenerator extends AbstractJavaGenerator {
             }
         }
         
+        List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
+        if (context.getPlugins().modelRecordWithBLOBsClassGenerated(
+                topLevelClass, introspectedTable)) {
+            answer.add(topLevelClass);
+        }
+        
         for (IntrospectedColumn introspectedColumn : introspectedTable
                 .getBLOBColumns()) {
             if (RootClassInfo.getInstance(rootClass, warnings)
@@ -108,11 +114,6 @@ public class RecordWithBLOBsGenerator extends AbstractJavaGenerator {
             }
         }
 
-        List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
-        if (context.getPlugins().modelRecordWithBLOBsClassGenerated(
-                topLevelClass, introspectedTable)) {
-            answer.add(topLevelClass);
-        }
         return answer;
     }
     

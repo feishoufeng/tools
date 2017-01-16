@@ -79,6 +79,12 @@ public class SimpleModelGenerator extends AbstractJavaGenerator {
             }
         }
 
+        List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
+        if (context.getPlugins().modelBaseRecordClassGenerated(topLevelClass,
+                introspectedTable)) {
+            answer.add(topLevelClass);
+        }
+        
         String rootClass = getRootClass();
         for (IntrospectedColumn introspectedColumn : introspectedColumns) {
             if (RootClassInfo.getInstance(rootClass, warnings)
@@ -111,11 +117,6 @@ public class SimpleModelGenerator extends AbstractJavaGenerator {
             }
         }
 
-        List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
-        if (context.getPlugins().modelBaseRecordClassGenerated(topLevelClass,
-                introspectedTable)) {
-            answer.add(topLevelClass);
-        }
         return answer;
     }
 
