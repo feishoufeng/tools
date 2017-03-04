@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dopakoala.douba.dao.IGroupDao">
+	<resultMap id="BaseResultMap" type="com.dopakoala.douba.entity.Group">
+		<id column="gid" jdbcType="INTEGER" property="gid" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="pid" jdbcType="INTEGER" property="pid" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="content" jdbcType="VARCHAR" property="content" />
+		<result column="number" jdbcType="INTEGER" property="number" />
+		<result column="regtype" jdbcType="CHAR" property="regtype" />
+		<result column="hotnum" jdbcType="INTEGER" property="hotnum" />
+		<result column="sortid" jdbcType="TIMESTAMP" property="sortid" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_user" jdbcType="INTEGER" property="createUser" />
+		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+		<result column="modify_account" jdbcType="INTEGER" property="modifyAccount" />
+		<result column="avatar" jdbcType="VARCHAR" property="avatar" />
+		<result column="typeName" jdbcType="VARCHAR" property="typeName" />
+		<result column="isadd" jdbcType="INTEGER" property="isadd" />
+		<result column="ismain" jdbcType="INTEGER" property="ismain" />
+		<result column="qrcode" jdbcType="INTEGER" property="qrcode" />
+		<result column="notice" jdbcType="VARCHAR" property="notice" />
+		<result column="nickname" jdbcType="VARCHAR" property="nickname" />
+		<result column="istemp" jdbcType="INTEGER" property="istemp" />
+		<result column="condition" jdbcType="VARCHAR" property="condition" />
+		<result column="root" jdbcType="INTEGER" property="root" />
+		<result column="open" jdbcType="INTEGER" property="open" />
+		<result column="uid" jdbcType="INTEGER" property="uid" />
+		<result column="thumbnail" jdbcType="VARCHAR" property="thumbnail" />
+		<result column="mobile" jdbcType="VARCHAR" property="mobile" />
+		<result column="date1" jdbcType="TIMESTAMP" property="date1" />
+		<result column="date2" jdbcType="TIMESTAMP" property="date2" />
+		<result column="page" jdbcType="INTEGER" property="page" />
+		<result column="pagesize" jdbcType="INTEGER" property="pagesize" />
+		<result column="sqlWhere" jdbcType="VARCHAR" property="sqlWhere" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		gid, type, pid, status, name, content, number, regtype,
+		hotnum, sortid,
+		create_time,
+		create_user, modify_time,
+		modify_account,avatar,ismain,qrcode,istemp,`condition`,thumbnail
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select * from `group`
+		where gid = #{gid,jdbcType=INTEGER}
+		and
+		status = 1
+	</select>
+	<select id="selectPaoTuan" parameterType="com.dopakoala.douba.entity.Group"
+		resultMap="BaseResultMap">
+		select g.*,u.mobile,t.name as typeName from `group` g
+		left join `group`
+		g2 on g2.pid = g.gid and g2.ismain = 1
+		left join group_user gu on
+		gu.gid = g2.gid
+		and gu.root = 1
+		left join user u on u.uid = gu.uid
+		left
+		join group_type t on t.id = g.type
+		where g.pid = 0
+		<if test="date1 != null and date2 != null">
+			and g.create_time between #{date1,jdbcType=TIMESTAMP} and
+			#{date2,jdbcType=TIMESTAMP}
+		</if>
+		<if test="sqlWhere != null">
+			${sqlWhere}
+		</if>
+		order by
+		g.create_time desc
+		<if test="page > 0 || pagesize > 0">
+			limit
+			#{page,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="selectGroup" parameterType="com.dopakoala.douba.entity.Group"
+		resultMap="BaseResultMap">
+		select g.*,u.mobile from `group` g
+		left join group_user gu on gu.gid =
+		g.gid
+		and gu.root = 1
+		left join user u on u.uid = gu.uid
+		where g.pid =
+		#{pid,jdbcType=INTEGER}
+		<if test="date1 != null and date2 != null">
+			and g.create_time between #{date1,jdbcType=TIMESTAMP} and
+			#{date2,jdbcType=TIMESTAMP}
+		</if>
+		<if test="sqlWhere != null">
+			${sqlWhere}
+		</if>
+		order by
+		g.ismain desc,g.istemp desc,g.create_time desc
+		<if test="page > 0 || pagesize > 0">
+			limit
+			#{page,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="selectByUidGid" parameterType="com.dopakoala.douba.entity.Group"
+		resultMap="BaseResultMap">
+		select g.*,t.name as
+		typeName,c.content as
+		notice,ifnull(gu.nickname,u.nickname) as
+		nickname,
+		gu.open as open
+		from
+		`group` g
+		left
+		join
+		group_type t on
+		t.id
+		= g.type
+		left join
+		(select
+		a.gid,a.content from
+		group_topic a,
+		(select
+		gid, max(create_time)
+		max_day
+		from group_topic
+		group by gid) b
+		where
+		a.gid = b.gid and
+		a.create_time =
+		b.max_day and
+		a.type = 'notice')
+		c
+		on
+		c.gid = g.gid
+		left
+		join user u
+		on u.uid
+		=
+		g.create_user and u.status = 1
+		left join
+		(select *
+		from
+		group_user where
+		uid =
+		#{uid,jdbcType=INTEGER} and
+		status = 1) gu
+		on
+		gu.gid = g.gid and
+		gu.status = 1
+		where
+		g.status
+		= 1
+		and g.gid =
+		#{gid,jdbcType=INTEGER}
+	</select>
+	<select id="selectMainByPid" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from `group`
+		where pid = #{pid,jdbcType=INTEGER} and ismain = 1 and
+		status = 1
+	</select>
+	<select id="selectPaotuanByUid" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select * from `group` where gid in(
+		select distinct(g1.pid)
+		from group_user gu
+		left join `group` g1 on gu.gid =
+		g1.gid
+		and g1.pid > 0
+		and g1.status = 1
+		where gu.uid = #{uid,jdbcType=INTEGER}
+		and gu.status =
+		1 ) and status = 1
+	</select>
+	<select id="selectTempByPid" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from `group`
+		where pid = #{pid,jdbcType=INTEGER} and istemp = 1 and
+		status = 1
+	</select>
+	<select id="selectTypeNameByPid" parameterType="com.dopakoala.douba.entity.Group"
+		resultMap="BaseResultMap">
+		select g.*,
+		t.name as
+		typeName,
+		ifnull(u.status,-1) as isadd,
+		ifnull(u.root,0) as root,
+		ifnull(u.open,0) as
+		open from `group` g
+		left
+		join
+		(select * from
+		group_user
+		where uid = #{uid,jdbcType=INTEGER} and
+		status = 1) u on
+		u.gid = g.gid
+		left join `group` g1 on g1.status = 1
+		and
+		g1.gid = g.pid
+		left join
+		group_type t on
+		t.id = g1.type
+		where g.status = 1
+		and g.pid = #{pid,jdbcType=INTEGER}
+		order by g.ismain desc,g.sortid
+		desc
+		<if test="page > 0 || pagesize > 0">
+			limit
+			#{page,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="selectByPidUid" parameterType="com.dopakoala.douba.entity.Group"
+		resultMap="BaseResultMap">
+		select * from `group`
+		where status = 1
+		and pid =
+		#{pid,jdbcType=INTEGER}
+		and gid in(select distinct(gid) from group_user
+		where status = 1 and uid
+		= #{uid,jdbcType=INTEGER})
+	</select>
+	<select id="selectGroupByUid" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select g1.*,c.content as notice from
+		group_user gu
+		left join (select *
+		from
+		`group`
+		where
+		ismain = 1) g on
+		g.gid = gu.gid
+		and g.status = 1
+		left
+		join
+		`group` g1 on
+		g1.gid = g.pid
+		and g1.status = 1
+		left join
+		(select
+		a.gid,a.content from
+		group_topic a,
+		(select
+		gid, max(create_time)
+		max_day
+		from group_topic
+		group by gid) b
+		where
+		a.gid = b.gid and
+		a.create_time =
+		b.max_day and
+		a.type = 'notice')
+		c
+		on
+		c.gid = g1.gid
+		where gu.uid =
+		#{uid,jdbcType=INTEGER}
+		and gu.status
+		= 1
+		and g.gid is not null
+		order by
+		g1.create_time asc
+		<if test="page > 0 || pagesize > 0">
+			limit
+			#{page,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="selectTypeNameByKeyword" parameterType="com.dopakoala.douba.entity.Group"
+		resultMap="BaseResultMap">
+		select g.*,t.name as
+		typeName,c.content as notice,u.nickname as
+		nickname
+		from
+		`group` g
+		left
+		join
+		group_type t on
+		t.id
+		= g.type
+		left join
+		(select a.gid,a.content from
+		group_topic a,
+		(select
+		gid, max(create_time)
+		max_day from group_topic
+		group by gid) b
+		where
+		a.gid = b.gid and
+		a.create_time = b.max_day and
+		a.type = 'notice')
+		c
+		on
+		c.gid = g.gid
+		left
+		join user u
+		on u.uid =
+		g.create_user
+		where
+		g.gid
+		<if test="isadd == 0">
+			not
+		</if>
+		in (select DISTINCT(g.pid) from group_user u
+		left join `group` g
+		on
+		u.gid =
+		g.gid and g.status = 1
+		where u.uid = #{uid,jdbcType=INTEGER} and
+		u.status = 1)
+		and g.status = 1
+		<!-- 获取所有跑团信息 -->
+		<if test="name != null and name != ''">
+			and g.name like CONCAT('%',#{name,jdbcType=VARCHAR},'%' )
+		</if>
+		and g.gid > 0
+		and g.pid = 0
+		order by g.sortid desc
+		<if test="page > 0 || pagesize > 0">
+			limit
+			#{page,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		`group`
+		where gid = #{gid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.dopakoala.douba.entity.Group"
+		useGeneratedKeys="true" keyProperty="gid">
+		insert into `group`
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="gid != null">
+				gid,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="pid != null">
+				pid,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="number != null">
+				number,
+			</if>
+			<if test="regtype != null">
+				regtype,
+			</if>
+			<if test="hotnum != null">
+				hotnum,
+			</if>
+			<if test="sortid != null">
+				sortid,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="modifyTime != null">
+				modify_time,
+			</if>
+			<if test="modifyAccount != null">
+				modify_account,
+			</if>
+			<if test="avatar != null and avatar != ''">
+				avatar,
+			</if>
+			<if test="ismain != null and ismain != ''">
+				ismain,
+			</if>
+			<if test="qrcode != null and qrcode != ''">
+				qrcode,
+			</if>
+			<if test="istemp != null and istemp != ''">
+				istemp,
+			</if>
+			<if test="condition != null and condition != ''">
+				`condition`,
+			</if>
+			<if test="thumbnail != null">
+				thumbnail,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="gid != null">
+				#{gid,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=INTEGER},
+			</if>
+			<if test="pid != null">
+				#{pid,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=VARCHAR},
+			</if>
+			<if test="number != null">
+				#{number,jdbcType=INTEGER},
+			</if>
+			<if test="regtype != null">
+				#{regtype,jdbcType=CHAR},
+			</if>
+			<if test="hotnum != null">
+				#{hotnum,jdbcType=INTEGER},
+			</if>
+			<if test="sortid != null">
+				#{sortid,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				#{modifyAccount,jdbcType=INTEGER},
+			</if>
+			<if test="avatar != null">
+				#{avatar,jdbcType=VARCHAR},
+			</if>
+			<if test="ismain != null">
+				#{ismain,jdbcType=INTEGER},
+			</if>
+			<if test="qrcode != null">
+				#{qrcode,jdbcType=VARCHAR},
+			</if>
+			<if test="istemp != null">
+				#{istemp,jdbcType=INTEGER},
+			</if>
+			<if test="condition != null">
+				#{condition,jdbcType=VARCHAR},
+			</if>
+			<if test="thumbnail != null">
+				#{thumbnail,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateQuitByPid" parameterType="java.lang.Integer">
+		update `group` set
+		status = -1 where pid = #{pid,jdbcType=INTEGER} and status = 1
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dopakoala.douba.entity.Group">
+		update `group`
+		<set>
+			<if test="type != null">
+				type = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="pid != null">
+				pid = #{pid,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=VARCHAR},
+			</if>
+			<if test="number != null">
+				number = #{number,jdbcType=INTEGER},
+			</if>
+			<if test="regtype != null">
+				regtype = #{regtype,jdbcType=CHAR},
+			</if>
+			<if test="hotnum != null">
+				hotnum = #{hotnum,jdbcType=INTEGER},
+			</if>
+			<if test="sortid != null">
+				sortid = #{sortid,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				modify_account = #{modifyAccount,jdbcType=INTEGER},
+			</if>
+			<if test="avatar != null">
+				avatar = #{avatar,jdbcType=VARCHAR},
+			</if>
+			<if test="ismain != null">
+				ismain = #{ismain,jdbcType=INTEGER},
+			</if>
+			<if test="qrcode != null">
+				qrcode = #{qrcode,jdbcType=VARCHAR},
+			</if>
+			<if test="istemp != null">
+				istemp = #{istemp,jdbcType=INTEGER},
+			</if>
+			<if test="condition != null">
+				`condition` = #{condition,jdbcType=VARCHAR},
+			</if>
+			<if test="thumbnail != null">
+				thumbnail = #{thumbnail,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where gid = #{gid,jdbcType=INTEGER}
+	</update>
+</mapper>

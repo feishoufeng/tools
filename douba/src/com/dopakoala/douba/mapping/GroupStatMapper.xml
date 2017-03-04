@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dopakoala.douba.dao.IGroupStatDao">
+	<resultMap id="BaseResultMap" type="com.dopakoala.douba.entity.GroupStat">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="gid" jdbcType="INTEGER" property="gid" />
+		<result column="number" jdbcType="INTEGER" property="number" />
+		<result column="topic" jdbcType="INTEGER" property="topic" />
+		<result column="qunnumber" jdbcType="INTEGER" property="qunnumber" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, gid, number, topic, qunnumber
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from group_stat
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from group_stat
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.dopakoala.douba.entity.GroupStat">
+		insert into group_stat
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="gid != null">
+				gid,
+			</if>
+			<if test="number != null">
+				number,
+			</if>
+			<if test="topic != null">
+				topic,
+			</if>
+			<if test="qunnumber != null">
+				qunnumber,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="gid != null">
+				#{gid,jdbcType=INTEGER},
+			</if>
+			<if test="number != null">
+				#{number,jdbcType=INTEGER},
+			</if>
+			<if test="topic != null">
+				#{topic,jdbcType=INTEGER},
+			</if>
+			<if test="qunnumber != null">
+				#{qunnumber,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dopakoala.douba.entity.GroupStat">
+		update group_stat
+		<set>
+			<if test="gid != null">
+				gid = #{gid,jdbcType=INTEGER},
+			</if>
+			<if test="number != null">
+				number = #{number,jdbcType=INTEGER},
+			</if>
+			<if test="topic != null">
+				topic = #{topic,jdbcType=INTEGER},
+			</if>
+			<if test="qunnumber != null">
+				qunnumber = #{qunnumber,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

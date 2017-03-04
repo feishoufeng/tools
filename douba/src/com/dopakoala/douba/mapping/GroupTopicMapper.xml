@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dopakoala.douba.dao.IGroupTopicDao">
+	<resultMap id="BaseResultMap" type="com.dopakoala.douba.entity.GroupTopic">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="gid" jdbcType="INTEGER" property="gid" />
+		<result column="type" jdbcType="VARCHAR" property="type" />
+		<result column="title" jdbcType="VARCHAR" property="title" />
+		<result column="istop" jdbcType="INTEGER" property="istop" />
+		<result column="likes" jdbcType="INTEGER" property="likes" />
+		<result column="shared" jdbcType="INTEGER" property="shared" />
+		<result column="sortid" jdbcType="TIMESTAMP" property="sortid" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_user" jdbcType="INTEGER" property="createUser" />
+		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+		<result column="modify_account" jdbcType="INTEGER" property="modifyAccount" />
+		<result column="nickname" jdbcType="VARCHAR" property="nickname" />
+	</resultMap>
+	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+		type="com.dopakoala.douba.entity.GroupTopic">
+		<result column="content" jdbcType="LONGVARCHAR" property="content" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, gid, type, title, istop, likes, shared, sortid,
+		create_time,
+		create_user, modify_time,
+		modify_account
+	</sql>
+	<sql id="Blob_Column_List">
+		content
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from group_topic
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByLimit" resultMap="ResultMapWithBLOBs">
+		select t.*,u.nickname as nickname
+		from group_topic t
+		left join
+		group_user u
+		on u.gid = t.gid and
+		t.create_user = u.uid
+		where t.gid =
+		#{gid,jdbcType=INTEGER}
+		<if test="type != null and type != ''">
+			and t.type = #{type,jdbcType=INTEGER}
+		</if>
+		order by t.istop desc,
+		t.create_time desc
+		<if test="page > 0 || pagesize > 0">
+			limit
+			#{page,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		group_topic
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.dopakoala.douba.entity.GroupTopic">
+		insert into group_topic
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="gid != null">
+				gid,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="istop != null">
+				istop,
+			</if>
+			<if test="likes != null">
+				likes,
+			</if>
+			<if test="shared != null">
+				shared,
+			</if>
+			<if test="sortid != null">
+				sortid,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="modifyTime != null">
+				modify_time,
+			</if>
+			<if test="modifyAccount != null">
+				modify_account,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="gid != null">
+				#{gid,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="istop != null">
+				#{istop,jdbcType=INTEGER},
+			</if>
+			<if test="likes != null">
+				#{likes,jdbcType=INTEGER},
+			</if>
+			<if test="shared != null">
+				#{shared,jdbcType=INTEGER},
+			</if>
+			<if test="sortid != null">
+				#{sortid,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				#{modifyAccount,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dopakoala.douba.entity.GroupTopic">
+		update group_topic
+		<set>
+			<if test="gid != null">
+				gid = #{gid,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="istop != null">
+				istop = #{istop,jdbcType=INTEGER},
+			</if>
+			<if test="likes != null">
+				likes = #{likes,jdbcType=INTEGER},
+			</if>
+			<if test="shared != null">
+				shared = #{shared,jdbcType=INTEGER},
+			</if>
+			<if test="sortid != null">
+				sortid = #{sortid,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				modify_account = #{modifyAccount,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

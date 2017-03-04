@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dopakoala.douba.dao.IUserActionLogDao">
+	<resultMap id="BaseResultMap" type="com.dopakoala.douba.entity.UserActionLog">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="uid" jdbcType="INTEGER" property="uid" />
+		<result column="action" jdbcType="CHAR" property="action" />
+		<result column="token" jdbcType="VARCHAR" property="token" />
+		<result column="deviceid" jdbcType="VARCHAR" property="deviceid" />
+		<result column="platform" jdbcType="CHAR" property="platform" />
+		<result column="version" jdbcType="CHAR" property="version" />
+		<result column="ip" jdbcType="VARCHAR" property="ip" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_user" jdbcType="INTEGER" property="createUser" />
+		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+		<result column="modify_account" jdbcType="INTEGER" property="modifyAccount" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, uid, action, token, deviceid, platform, version, ip, create_time,
+		create_user,
+		modify_time, modify_account
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_action_log
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from user_action_log
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.dopakoala.douba.entity.UserActionLog">
+		insert into user_action_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="action != null">
+				action,
+			</if>
+			<if test="token != null">
+				token,
+			</if>
+			<if test="deviceid != null">
+				deviceid,
+			</if>
+			<if test="platform != null">
+				platform,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="ip != null">
+				ip,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="modifyTime != null">
+				modify_time,
+			</if>
+			<if test="modifyAccount != null">
+				modify_account,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="uid != null">
+				#{uid,jdbcType=INTEGER},
+			</if>
+			<if test="action != null">
+				#{action,jdbcType=CHAR},
+			</if>
+			<if test="token != null">
+				#{token,jdbcType=VARCHAR},
+			</if>
+			<if test="deviceid != null">
+				#{deviceid,jdbcType=VARCHAR},
+			</if>
+			<if test="platform != null">
+				#{platform,jdbcType=CHAR},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=CHAR},
+			</if>
+			<if test="ip != null">
+				#{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				#{modifyAccount,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dopakoala.douba.entity.UserActionLog">
+		update user_action_log
+		<set>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=INTEGER},
+			</if>
+			<if test="action != null">
+				action = #{action,jdbcType=CHAR},
+			</if>
+			<if test="token != null">
+				token = #{token,jdbcType=VARCHAR},
+			</if>
+			<if test="deviceid != null">
+				deviceid = #{deviceid,jdbcType=VARCHAR},
+			</if>
+			<if test="platform != null">
+				platform = #{platform,jdbcType=CHAR},
+			</if>
+			<if test="version != null">
+				version = #{version,jdbcType=CHAR},
+			</if>
+			<if test="ip != null">
+				ip = #{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				modify_account = #{modifyAccount,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

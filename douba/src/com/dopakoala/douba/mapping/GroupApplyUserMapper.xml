@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dopakoala.douba.dao.IGroupApplyUserDao">
+	<resultMap id="BaseResultMap" type="com.dopakoala.douba.entity.GroupApplyUser">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="gid" jdbcType="INTEGER" property="gid" />
+		<result column="uid" jdbcType="INTEGER" property="uid" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="page" jdbcType="INTEGER" property="page" />
+		<result column="pagesize" jdbcType="INTEGER" property="pagesize" />
+		<result column="nickname" jdbcType="VARCHAR" property="nickname" />
+		<result column="groupname" jdbcType="VARCHAR" property="groupname" />
+		<result column="avatar" jdbcType="VARCHAR" property="avatar" />
+		<result column="thumbnail" jdbcType="VARCHAR" property="thumbnail" />
+		<result column="content" jdbcType="LONGVARCHAR" property="content" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, gid, uid, create_time,content
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from group_apply_user
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByGid" parameterType="com.dopakoala.douba.entity.GroupApplyUser"
+		resultMap="BaseResultMap">
+		select user.*
+		from
+		(select
+		u.*,u1.avatar,u1.nickname,g.name as
+		groupname,case
+		when
+		u1.thumbnail is null then u1.avatar when
+		u1.thumbnail = '' then
+		u1.avatar when u1.thumbnail != '' then
+		u1.thumbnail
+		end as thumbnail
+		from
+		`group` g
+		left join
+		group_apply_user u
+		on u.gid = g.gid
+		left join user
+		u1
+		on
+		u1.uid =
+		u.uid
+		where g.status = 1
+		and
+		g.pid =
+		#{gid,jdbcType=INTEGER}
+		union all
+		select
+		u.*,u1.avatar,u1.nickname,g.name as groupname,case
+		when
+		u1.thumbnail is
+		null then u1.avatar when
+		u1.thumbnail = '' then
+		u1.avatar when
+		u1.thumbnail != '' then u1.thumbnail
+		end as thumbnail
+		from
+		`group` g
+		left
+		join
+		group_apply_user u
+		on u.gid = g.gid
+		left join
+		user
+		u1
+		on
+		u1.uid = u.uid
+		and u1.status = 1
+		where g.pid = 0 and g.status = 1
+		and
+		g.gid =
+		#{gid,jdbcType=INTEGER})
+		user
+		where user.id is not null
+		<if test="page > 0 || pagesize > 0">
+			limit
+			#{page,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="selectCheckByGidUid" parameterType="com.dopakoala.douba.entity.GroupApplyUser"
+		resultMap="BaseResultMap">
+		select gau.*,g.name as groupname,u.nickname as nickname,u.avatar as
+		avatar,case when u.thumbnail is null then u.avatar when
+		u.thumbnail =
+		'' then u.avatar when u.thumbnail != '' then u.thumbnail
+		end as
+		thumbnail from (
+		select * from group_apply_user where gid in(
+		select
+		DISTINCT(g.gid) from `group` g
+		left join group_user gu
+		on gu.gid = g.gid
+		and gu.root > 0
+		and gu.uid = #{uid,jdbcType=INTEGER} and gu.status = 1
+		where gu.id is not null and g.pid = #{gid,jdbcType=INTEGER} and
+		g.status = 1
+		union all
+		select case when m.num > 0 then (
+		select gid from
+		`group` where gid = #{gid,jdbcType=INTEGER}) else 0 end as num
+		from(
+		select count(DISTINCT(g.gid)) as num from `group` g
+		left join
+		group_user gu
+		on gu.gid = g.gid and gu.root > 0
+		and gu.uid =
+		#{uid,jdbcType=INTEGER} and gu.status = 1
+		where gu.id is not null and
+		g.pid = #{gid,jdbcType=INTEGER} and g.status = 1)m))gau
+		left join
+		`group` g on g.gid = gau.gid and g.status = 1
+		LEFT JOIN user u on u.uid
+		= gau.uid and u.status = 1
+		where gau.gid is not null and gau.gid != 0
+		order by
+		gau.create_time desc
+		<if test="page > 0 || pagesize > 0">
+			limit
+			#{page,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="selectByGidUid" parameterType="com.dopakoala.douba.entity.GroupApplyUser"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from group_apply_user
+		where gid = #{gid,jdbcType=INTEGER}
+		and uid =
+		#{uid,jdbcType=INTEGER}
+	</select>
+	<select id="selectByUid" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from group_apply_user
+		where uid = #{uid,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		group_apply_user
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.dopakoala.douba.entity.GroupApplyUser">
+		insert into group_apply_user
+		(id, gid, uid,
+		create_time, content)
+		values (#{id,jdbcType=INTEGER},
+		#{gid,jdbcType=INTEGER},
+		#{uid,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.dopakoala.douba.entity.GroupApplyUser">
+		insert into group_apply_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="gid != null">
+				gid,
+			</if>
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="gid != null">
+				#{gid,jdbcType=INTEGER},
+			</if>
+			<if test="uid != null">
+				#{uid,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dopakoala.douba.entity.GroupApplyUser">
+		update group_apply_user
+		<set>
+			<if test="gid != null">
+				gid = #{gid,jdbcType=INTEGER},
+			</if>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

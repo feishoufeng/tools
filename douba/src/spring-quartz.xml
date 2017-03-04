@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd  
+                        http://www.springframework.org/schema/context  
+                        http://www.springframework.org/schema/context/spring-context-4.3.xsd  
+                        http://www.springframework.org/schema/mvc  
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+	<!-- 引入配置文件 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations" value="classpath:*.properties" />
+	</bean>
+
+
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!-- 同步融云聊天日志 -->
+				<ref bean="msgAsynTaskTrigger" />
+				<!-- 将月跑步量清零 -->
+				<ref bean="runPlanClearTrigger" />
+				<!-- 提示开卡推送 -->
+				<ref bean="openCardPushTrigger" />
+			</list>
+		</property>
+
+		<!-- 定时任务的factorybean,配置其他config -->
+		<property name="jobFactory">
+			<bean class="com.dopakoala.douba.quartz.JobFactory" />
+		</property>
+		<property name="waitForJobsToCompleteOnShutdown" value="true" />
+		<property name="quartzProperties">
+			<props>
+				<!-- 集群配置 -->
+				<!-- 配置集群时，quartz调度器的id，由于配置集群时，只有一个调度器，必须保证每个服务器该值都相同，可以不用修改，只要每个ams都一样就行 -->
+				<prop key="org.quartz.scheduler.instanceName">DefaultQuartzScheduler</prop>
+				<prop key="org.quartz.scheduler.rmi.export">false</prop>
+				<prop key="org.quartz.scheduler.rmi.proxy">false</prop>
+				<!-- #集群中每台服务器自己的id，AUTO表示自动生成，无需修改 -->
+				<prop key="org.quartz.scheduler.instanceId">AUTO</prop>
+
+				<!-- 线程配置 -->
+				<!-- #quartz线程池的实现类，无需修改 -->
+				<prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
+				<!-- #quartz线程池中线程数，可根据任务数量和负责度来调整 -->
+				<prop key="org.quartz.threadPool.threadCount">1</prop>
+				<!-- #quartz线程优先级 -->
+				<prop key="org.quartz.threadPool.threadPriority">1</prop>
+				<prop
+					key="org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread">true</prop>
+
+				<!-- 持久化配置 -->
+				<!-- 默认配置，数据保存到内存 -->
+				<!-- org.quartz.simpl.RAMJobStore表示内存存储，org.quartz.impl.jdbcjobstore.JobStoreTX表示数据库存储 -->
+				<!-- <prop key="org.quartz.jobStore.class">org.quartz.simpl.RAMJobStore</prop> -->
+				<prop key="org.quartz.jobStore.class">org.quartz.impl.jdbcjobstore.JobStoreTX</prop>
+				<prop key="org.quartz.jobStore.driverDelegateClass">org.quartz.impl.jdbcjobstore.StdJDBCDelegate</prop>
+				<!-- #quartz存储任务相关数据的表的前缀，数据库存储时打开 -->
+				<prop key="org.quartz.jobStore.tablePrefix">QRTZ_</prop>
+				<!-- #表示如果某个任务到达执行时间，而此时线程池中没有可用线程时，任务等待的最大时间，如果等待时间超过下面配置的值(毫秒)，本次就不在执行，而等待下一次执行时间的到来，可根据任务量和负责程度来调整 -->
+				<prop key="org.quartz.jobStore.misfireThreshold">60000</prop>
+				<!-- #连接数据库数据源名称，与下面配置中org.quartz.dataSource.myDS的myDS一致即可，可以无需修改 -->
+				<prop key="org.quartz.jobStore.dataSource">qzDS</prop>
+				<!-- #是否启用集群，启用，改为true,注意：启用集群后，必须配置下面的数据源，否则quartz调度器会初始化失败 -->
+				<prop key="org.quartz.jobStore.isClustered">true</prop>
+				<!-- #集群中服务器相互检测间隔，每台服务器都会按照下面配置的时间间隔往服务器中更新自己的状态，如果某台服务器超过以下时间没有checkin，调度器就会认为该台服务器已经down掉，不会再分配任务给该台服务器 -->
+				<!-- <prop key="org.quartz.jobStore.clusterCheckinInterval">20000</prop> -->
+
+				<!-- JDBC驱动 -->
+				<!-- #配置连接数据库的实现类，可以参照IAM数据库配置文件中的配置 -->
+				<prop key="org.quartz.dataSource.qzDS.driver">#{'${server}'=='test_'?'${test_driverClassName}':'${server}'=='local_'?'${local_driverClassName}':'${release_driverClassName}'}
+				</prop>
+				<!-- #配置连接数据库连接，可以参照IAM数据库配置文件中的配置 -->
+				<prop key="org.quartz.dataSource.qzDS.URL"><![CDATA[#{'${server}'=='test_'?'${test_quartz_url}':'${server}'=='local_'?'${local_quartz_url}':'${release_quartz_url}'}]]></prop>
+				<!-- #配置连接数据库用户名 -->
+				<prop key="org.quartz.dataSource.qzDS.user">#{'${server}'=='test_'?'${test_username}':'${server}'=='local_'?'${local_username}':'${release_username}'}
+				</prop>
+				<!-- #配置连接数据库密码 -->
+				<prop key="org.quartz.dataSource.qzDS.password">#{'${server}'=='test_'?'${test_password}':'${server}'=='local_'?'${local_password}':'${release_password}'}
+				</prop>
+				<!-- #配置连接数据库连接池大小，一般为上面配置的线程池的2倍 -->
+				<prop key="org.quartz.dataSource.qzDS.maxConnections">2</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 同步融云聊天日志start -->
+	<bean id="msgAsynTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean name="caseArchiveSuspendedJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+				<property name="jobClass" value="com.dopakoala.douba.quartz.jobs.MessageAsynJob" />
+			</bean>
+		</property>
+		<!-- 每30分钟运行一次 -->
+		<property name="cronExpression" value="0 0/30 * * * ?" />
+	</bean>
+	<!-- 同步融云聊天日志end -->
+
+	<!-- 将月跑步量清零start -->
+	<bean id="runPlanClearTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean name="caseArchiveSuspendedJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+				<property name="jobClass" value="com.dopakoala.douba.quartz.jobs.RunPlanClearJob" />
+			</bean>
+		</property>
+		<!-- 每月一号零点 -->
+		<property name="cronExpression" value="0 0 0 1 * ?" />
+	</bean>
+	<!-- 同步融云聊天日志end -->
+
+	<!-- 提示开卡推送start -->
+	<bean id="openCardPushTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean name="caseArchiveSuspendedJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+				<property name="jobClass" value="com.dopakoala.douba.quartz.jobs.OpenCardPushJob" />
+			</bean>
+		</property>
+		<!-- 每天23:30运行 -->
+		<property name="cronExpression" value="0 30 23 * * ?" />
+	</bean>
+	<!-- 提示开卡推送end -->
+
+	<!-- 定时任务调度工厂end -->
+</beans>

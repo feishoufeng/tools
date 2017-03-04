@@ -1,0 +1,29 @@
+td {
+	vertical-align: middle;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	word-break: keep-all;
+	text-overflow: ellipsis;
+	padding: 0 10px;
+}
+
+tr[data-name=title] {
+	text-align: left;
+	background: #3868B7;
+	color: white;
+}
+
+tr {
+	height: 2em;
+}
+
+table {
+	width: 100%;
+	margin-top: 10px;
+	table-layout: fixed;
+}
+
+tr[alt]:nth-child(2n + 1) {
+	background: #F0F0F0;
+}

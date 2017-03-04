@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dopakoala.douba.dao.IPrivateChatDao">
+	<resultMap id="BaseResultMap" type="com.dopakoala.douba.entity.PrivateChat">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="gid" jdbcType="INTEGER" property="gid" />
+		<result column="uid" jdbcType="INTEGER" property="uid" />
+		<result column="to_uid" jdbcType="INTEGER" property="toUid" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_user" jdbcType="INTEGER" property="createUser" />
+		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+		<result column="modify_account" jdbcType="INTEGER" property="modifyAccount" />
+		<result column="nickname" jdbcType="VARCHAR" property="nickname" />
+		<result column="avatar" jdbcType="VARCHAR" property="avatar" />
+		<result column="thumbnail" jdbcType="VARCHAR" property="thumbnail" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, gid, uid, to_uid, status, create_time, create_user,
+		modify_time,
+		modify_account
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from private_chat
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByGidUid" parameterType="com.dopakoala.douba.entity.PrivateChat"
+		resultMap="BaseResultMap">
+		select c.*,u.nickname as nickname,u.avatar as avatar,u.thumbnail as thumbnail from (
+		select *
+		from private_chat
+		where gid = #{gid,jdbcType=INTEGER}
+		and uid =
+		#{uid,jdbcType=INTEGER}
+		and status = 1
+		union all
+		select
+		id, gid, to_uid,
+		uid, status, create_time, create_user,
+		modify_time,
+		modify_account
+		from
+		private_chat
+		where gid = #{gid,jdbcType=INTEGER}
+		and to_uid =
+		#{uid,jdbcType=INTEGER}
+		and status = 1) c
+		left join user u
+		on u.uid = c.to_uid and u.status = 1
+	</select>
+	<select id="selectByGidUidToUid" parameterType="com.dopakoala.douba.entity.PrivateChat"
+		resultMap="BaseResultMap">
+		select c.*,u.nickname as nickname,u.avatar as avatar from (
+		select *
+		from private_chat
+		where gid = #{gid,jdbcType=INTEGER}
+		and uid =
+		#{uid,jdbcType=INTEGER}
+		and to_uid = #{toUid,jdbcType=INTEGER}
+		and
+		status = 1
+		union all
+		select id, gid, to_uid, uid, status,
+		create_time,
+		create_user,
+		modify_time,
+		modify_account
+		from private_chat
+		where gid =
+		#{gid,jdbcType=INTEGER}
+		and to_uid =
+		#{uid,jdbcType=INTEGER}
+		and uid =
+		#{toUid,jdbcType=INTEGER}
+		and status = 1) c
+		left join user u
+		on u.uid = c.to_uid and u.status = 1
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		private_chat
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.dopakoala.douba.entity.PrivateChat">
+		insert into private_chat
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="gid != null">
+				gid,
+			</if>
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="toUid != null">
+				to_uid,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="modifyTime != null">
+				modify_time,
+			</if>
+			<if test="modifyAccount != null">
+				modify_account,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="gid != null">
+				#{gid,jdbcType=INTEGER},
+			</if>
+			<if test="uid != null">
+				#{uid,jdbcType=INTEGER},
+			</if>
+			<if test="toUid != null">
+				#{toUid,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				#{modifyAccount,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dopakoala.douba.entity.PrivateChat">
+		update private_chat
+		<set>
+			<if test="gid != null">
+				gid = #{gid,jdbcType=INTEGER},
+			</if>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=INTEGER},
+			</if>
+			<if test="toUid != null">
+				to_uid = #{toUid,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				modify_account = #{modifyAccount,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateStatus" parameterType="com.dopakoala.douba.entity.PrivateChat">
+		update private_chat
+		<set>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+		</set>
+		where uid = #{uid,jdbcType=INTEGER}
+		and gid = #{gid,jdbcType=INTEGER}
+		and to_uid = #{toUid,jdbcType=INTEGER}
+		and status = 1
+	</update>
+</mapper>

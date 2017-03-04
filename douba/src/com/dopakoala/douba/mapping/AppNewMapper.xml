@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dopakoala.douba.dao.IAppNewDao">
+	<resultMap id="BaseResultMap" type="com.dopakoala.douba.entity.AppNew">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="cityid" jdbcType="INTEGER" property="cityid" />
+		<result column="title" jdbcType="VARCHAR" property="title" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="img" jdbcType="VARCHAR" property="img" />
+		<result column="url" jdbcType="VARCHAR" property="url" />
+		<result column="read_cnt" jdbcType="INTEGER" property="readCnt" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="sort_id" jdbcType="TIMESTAMP" property="sortId" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_user" jdbcType="INTEGER" property="createUser" />
+		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+		<result column="modify_account" jdbcType="INTEGER" property="modifyAccount" />
+		<result column="page" jdbcType="INTEGER" property="page" />
+		<result column="pagesize" jdbcType="INTEGER" property="pagesize" />
+		<result column="adress" jdbcType="VARCHAR" property="adress" />
+		<result column="typeName" jdbcType="VARCHAR" property="typeName" />
+		<result column="content" jdbcType="LONGVARCHAR" property="content" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, cityid, title, type, img, url, read_cnt, status,
+		sort_id,
+		create_time, create_user,
+		modify_time, modify_account,content
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from app_news
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" parameterType="com.dopakoala.douba.entity.AppNew"
+		resultMap="BaseResultMap">
+		select n.*,case
+		when a3.value = a2.value
+		then concat(ifnull(a3.value,''),if(a3.value is not null and a1.value is
+		not null,'-',''),ifnull(a1.value,''))
+		else concat(ifnull(a3.value,''),if(a3.value is not null and a2.value is
+		not null,'-',''),ifnull(a2.value,''),if(a2.value is not null and
+		a1.value is not null,'-',''),ifnull(a1.value,'')) end as adress,t.name as typeName
+		from app_news n
+		left join area_number a1
+		on a1.code = n.cityid
+		left join area_number a2
+		on a2.code = a1.pid
+		left join area_number a3
+		on a3.code = a2.pid
+		left join app_news_type t
+		on t.id = n.type
+		order by modify_time desc
+		<if test="page > 0 || pagesize > 0">
+			limit
+			#{page,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		app_news
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.dopakoala.douba.entity.AppNew">
+		insert into app_news
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="cityid != null">
+				cityid,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="img != null">
+				img,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="readCnt != null">
+				read_cnt,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="sortId != null">
+				sort_id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="modifyTime != null">
+				modify_time,
+			</if>
+			<if test="modifyAccount != null">
+				modify_account,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="cityid != null">
+				#{cityid,jdbcType=INTEGER},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=INTEGER},
+			</if>
+			<if test="img != null">
+				#{img,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="readCnt != null">
+				#{readCnt,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="sortId != null">
+				#{sortId,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				#{modifyAccount,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dopakoala.douba.entity.AppNew">
+		update app_news
+		<set>
+			<if test="cityid != null">
+				cityid = #{cityid,jdbcType=INTEGER},
+			</if>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="img != null">
+				img = #{img,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="readCnt != null">
+				read_cnt = #{readCnt,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="sortId != null">
+				sort_id = #{sortId,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				modify_account = #{modifyAccount,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

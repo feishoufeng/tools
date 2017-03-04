@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dopakoala.douba.dao.IGroupUserDao">
+	<resultMap id="BaseResultMap" type="com.dopakoala.douba.entity.GroupUser">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="gid" jdbcType="INTEGER" property="gid" />
+		<result column="nickname" jdbcType="VARCHAR" property="nickname" />
+		<result column="uid" jdbcType="INTEGER" property="uid" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="level" jdbcType="INTEGER" property="level" />
+		<result column="intro" jdbcType="VARCHAR" property="intro" />
+		<result column="points" jdbcType="INTEGER" property="points" />
+		<result column="root" jdbcType="INTEGER" property="root" />
+		<result column="open" jdbcType="INTEGER" property="open" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_user" jdbcType="INTEGER" property="createUser" />
+		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+		<result column="modify_account" jdbcType="INTEGER" property="modifyAccount" />
+		<result column="avatar" jdbcType="VARCHAR" property="avatar" />
+		<result column="sign" jdbcType="VARCHAR" property="sign" />
+		<result column="page" jdbcType="INTEGER" property="page" />
+		<result column="pagesize" jdbcType="INTEGER" property="pagesize" />
+		<result column="sex" jdbcType="INTEGER" property="sex" />
+		<result column="num" jdbcType="INTEGER" property="num" />
+		<result column="thumbnail" jdbcType="VARCHAR" property="thumbnail" />
+		<result column="groupName" jdbcType="VARCHAR" property="groupName" />
+		<result column="realname" jdbcType="VARCHAR" property="realname" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, gid, nickname, uid, status, level, intro,
+		points,root,open,
+		create_time,
+		create_user, modify_time,
+		modify_account,realname
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from group_user
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectAdminByGid" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from group_user
+		where gid = #{gid,jdbcType=INTEGER}
+		and (root = 1 or
+		root = 2) and
+		status = 1
+	</select>
+	<select id="selectSuperByGid" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from group_user
+		where gid = #{gid,jdbcType=INTEGER}
+		and root = 1 and
+		status = 1
+	</select>
+	<select id="selectOpenByGid" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		SELECT gu.*,g.name as groupName FROM group_user gu
+		left join
+		`group` g on gu.gid = g.gid
+		and g.status = 1
+		where gu.gid =
+		#{gid,jdbcType=INTEGER}
+		and gu.open = 1 and gu.status = 1
+	</select>
+	<select id="selectAllOpen" resultMap="BaseResultMap">
+		SELECT gu.*,g.name as
+		groupName FROM group_user gu
+		left join `group` g on g.gid = gu.gid
+		and
+		g.status = 1
+		where gu.open = 1 and gu.status = 1
+	</select>
+	<select id="selectAdminNumByGid" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from group_user
+		where gid = #{gid,jdbcType=INTEGER}
+		and root = 2 and
+		status = 1
+	</select>
+	<select id="selectByUidGid" resultMap="BaseResultMap"
+		parameterType="com.dopakoala.douba.entity.GroupUser">
+		select
+		g.*,u.avatar as
+		avatar,u.sign as sign,case when
+		u.thumbnail is null then u.avatar when
+		u.thumbnail = '' then u.avatar
+		when u.thumbnail != '' then u.thumbnail
+		end as thumbnail
+		from
+		group_user
+		g
+		left
+		join user u
+		on g.uid = u.uid
+		and u.status = 1
+		where
+		g.uid =
+		#{uid,jdbcType=INTEGER}
+		and
+		g.gid =
+		#{gid,jdbcType=INTEGER}
+		and
+		g.status =
+		1
+	</select>
+	<select id="selectNumByUid" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select count(*) as num from
+		`group` g
+		left join
+		group_user u on
+		u.gid = g.gid
+		and uid = #{uid,jdbcType=INTEGER} and u.status = 1
+		where
+		g.ismain = 1 and
+		g.status = 1
+		and u.id is not null
+		union all
+		select
+		count(*) as num from
+		`group` g
+		left join
+		group_user u on u.gid = g.gid
+		and uid = #{uid,jdbcType=INTEGER} and
+		u.status = 1
+		where g.pid != 0 and
+		g.status = 1
+		and u.id is not null
+		union all
+		select count(*) as num from
+		group_user u
+		left join
+		`group` g on
+		g.gid = u.gid and g.status = 1
+		and
+		g.ismain = 1
+		where u.root = 1 and
+		u.status = 1
+		and uid =
+		#{uid,jdbcType=INTEGER}
+		and g.gid is not null
+		union all
+		select count(*)
+		as num from
+		group_user u
+		left join
+		`group` g on g.gid = u.gid and
+		g.status = 1
+		and g.pid != 0
+		where u.root = 1 and u.status = 1
+		and uid =
+		#{uid,jdbcType=INTEGER}
+		and g.gid is not null
+	</select>
+	<select id="selectTopUserInfo" resultMap="BaseResultMap"
+		parameterType="com.dopakoala.douba.entity.GroupUser">
+		select info.* from (
+		select info1.* from (
+		select
+		gu.nickname,gu.uid,u.avatar,case when u.thumbnail is null then
+		u.avatar when u.thumbnail = '' then u.avatar when u.thumbnail != ''
+		then u.thumbnail end as thumbnail from `group` g
+		left join
+		group_user gu
+		on
+		gu.gid = g.gid and gu.status = 1 and gu.root != 0
+		left
+		join user u
+		on
+		u.uid = gu.uid and u.status = 1
+		where g.gid =
+		#{gid,jdbcType=INTEGER}
+		and g.status = 1 and gu.uid is not
+		null
+		order by
+		gu.root asc) info1
+		union
+		all
+		select info2.* from (
+		select
+		gu.nickname,gu.uid,u.avatar,case when
+		u.thumbnail is null then u.avatar when u.thumbnail = '' then u.avatar
+		when u.thumbnail != '' then u.thumbnail end as thumbnail from
+		`group` g
+		left join
+		group_user gu
+		on gu.gid = g.gid and gu.status = 1
+		and gu.root =
+		0
+		left
+		join user u
+		on u.uid = gu.uid and u.status = 1
+		where g.gid =
+		#{gid,jdbcType=INTEGER} and g.status = 1 and gu.uid is
+		not
+		null
+		order by
+		gu.create_time asc) info2
+		) info limit
+		0,#{pagesize,jdbcType=INTEGER}
+	</select>
+	<select id="selectByGid" parameterType="com.dopakoala.douba.entity.GroupUser"
+		resultMap="BaseResultMap">
+		select
+		g.*,u.avatar as avatar,case when u.thumbnail is null then
+		u.avatar when u.thumbnail = '' then u.avatar when u.thumbnail != ''
+		then u.thumbnail end as thumbnail,u.sign as
+		sign,u.sex as sex
+		from
+		group_user g
+		left join
+		user u
+		on g.uid =
+		u.uid and u.status = 1
+		where
+		g.gid
+		=
+		#{gid,jdbcType=INTEGER}
+		and g.status = 1
+		<if test="page > 0 || pagesize > 0">
+			limit
+			#{page,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		group_user
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.dopakoala.douba.entity.GroupUser">
+		insert into group_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="gid != null">
+				gid,
+			</if>
+			<if test="nickname != null">
+				nickname,
+			</if>
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="level != null">
+				level,
+			</if>
+			<if test="intro != null">
+				intro,
+			</if>
+			<if test="points != null">
+				points,
+			</if>
+			<if test="root != null">
+				root,
+			</if>
+			<if test="open != null">
+				open,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="modifyTime != null">
+				modify_time,
+			</if>
+			<if test="modifyAccount != null">
+				modify_account,
+			</if>
+			<if test="realname != null">
+				realname,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="gid != null">
+				#{gid,jdbcType=INTEGER},
+			</if>
+			<if test="nickname != null">
+				#{nickname,jdbcType=VARCHAR},
+			</if>
+			<if test="uid != null">
+				#{uid,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="level != null">
+				#{level,jdbcType=INTEGER},
+			</if>
+			<if test="intro != null">
+				#{intro,jdbcType=VARCHAR},
+			</if>
+			<if test="points != null">
+				#{points,jdbcType=INTEGER},
+			</if>
+			<if test="root != null">
+				#{root,jdbcType=INTEGER},
+			</if>
+			<if test="open != null">
+				#{open,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				#{modifyAccount,jdbcType=INTEGER},
+			</if>
+			<if test="realname != null">
+				#{realname,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dopakoala.douba.entity.GroupUser">
+		update group_user
+		<set>
+			<if test="gid != null">
+				gid = #{gid,jdbcType=INTEGER},
+			</if>
+			<if test="nickname != null">
+				nickname = #{nickname,jdbcType=VARCHAR},
+			</if>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="level != null">
+				level = #{level,jdbcType=INTEGER},
+			</if>
+			<if test="intro != null">
+				intro = #{intro,jdbcType=VARCHAR},
+			</if>
+			<if test="points != null">
+				points = #{points,jdbcType=INTEGER},
+			</if>
+			<if test="root != null">
+				root = #{root,jdbcType=INTEGER},
+			</if>
+			<if test="open != null">
+				open = #{open,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				modify_account = #{modifyAccount,jdbcType=INTEGER},
+			</if>
+			<if test="realname != null">
+				realname = #{realname,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByGidSelective" parameterType="com.dopakoala.douba.entity.GroupUser">
+		update group_user
+		<set>
+			<if test="nickname != null">
+				nickname = #{nickname,jdbcType=VARCHAR},
+			</if>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="level != null">
+				level = #{level,jdbcType=INTEGER},
+			</if>
+			<if test="intro != null">
+				intro = #{intro,jdbcType=VARCHAR},
+			</if>
+			<if test="points != null">
+				points = #{points,jdbcType=INTEGER},
+			</if>
+			<if test="root != null">
+				root = #{root,jdbcType=INTEGER},
+			</if>
+			<if test="open != null">
+				open = #{open,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				modify_account = #{modifyAccount,jdbcType=INTEGER},
+			</if>
+			<if test="realname != null">
+				realname = #{realname,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where gid = #{gid,jdbcType=INTEGER}
+	</update>
+</mapper>

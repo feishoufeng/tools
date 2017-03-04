@@ -1,0 +1,14 @@
+.siteName{
+	font-family: 华文彩云;
+	font-size: 48px;
+	color: #FA6702;
+	margin: 8px;
+}
+.msgDetai div div:LAST-CHILD div{
+	cursor: pointer;
+	float:left;
+}
+
+.msgDetai div div{
+	margin-top: 5px;
+}

@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+
+#province {
+	width: auto;
+	min-width: 100px;
+}
+
+#city {
+	width: auto;
+	min-width: 100px;
+}
+
+#area {
+	width: auto;
+	min-width: 100px;
+}
+
+#type {
+	width: auto;
+	min-width: 100px;
+}
+
+a:LINK {
+	text-decoration: none;
+	color: black;
+}
+
+a:VISITED {
+	text-decoration: none;
+	color: black;
+}
+
+a:HOVER {
+	text-decoration: none;
+	color: blue;
+}
+
+a:ACTIVE {
+	text-decoration: none;
+}

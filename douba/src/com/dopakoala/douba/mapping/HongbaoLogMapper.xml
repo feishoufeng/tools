@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dopakoala.douba.dao.IHongbaoLogDao">
+	<resultMap id="BaseResultMap" type="com.dopakoala.douba.entity.HongbaoLog">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="hongbao_id" jdbcType="INTEGER" property="hongbaoId" />
+		<result column="uid" jdbcType="INTEGER" property="uid" />
+		<result column="money" jdbcType="BIGINT" property="money" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_user" jdbcType="INTEGER" property="createUser" />
+		<result column="nickname" jdbcType="VARCHAR" property="nickname" />
+		<result column="thumbnail" jdbcType="VARCHAR" property="thumbnail" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, hongbao_id, uid, money, create_time, create_user
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from hongbao_log
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByHongbaoId" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select l.*,case when h.type = 'common' then u.nickname when
+		h.type = 'group_c' or h.type = 'group_p' then gu.nickname else
+		u.nickname end as
+		nickname,u.thumbnail from
+		hongbao_log l
+		left
+		join
+		hongbao h on h.id =
+		l.hongbao_id
+		left join
+		group_user gu on gu.uid
+		= h.uid
+		and h.gid = gu.gid
+		left join user u on
+		u.uid = l.uid
+		where
+		l.hongbao_id =
+		#{hongbaoId,jdbcType=INTEGER}
+		order by
+		l.create_time desc
+	</select>
+	<select id="selectByIdUid" parameterType="com.dopakoala.douba.entity.HongbaoLog"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from hongbao_log
+		where hongbao_id = #{hongbaoId,jdbcType=INTEGER}
+		and
+		uid = #{uid,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		hongbao_log
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.dopakoala.douba.entity.HongbaoLog">
+		insert into hongbao_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="hongbaoId != null">
+				hongbao_id,
+			</if>
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="money != null">
+				money,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="hongbaoId != null">
+				#{hongbaoId,jdbcType=INTEGER},
+			</if>
+			<if test="uid != null">
+				#{uid,jdbcType=INTEGER},
+			</if>
+			<if test="money != null">
+				#{money,jdbcType=BIGINT},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dopakoala.douba.entity.HongbaoLog">
+		update hongbao_log
+		<set>
+			<if test="hongbaoId != null">
+				hongbao_id = #{hongbaoId,jdbcType=INTEGER},
+			</if>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=INTEGER},
+			</if>
+			<if test="money != null">
+				money = #{money,jdbcType=BIGINT},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

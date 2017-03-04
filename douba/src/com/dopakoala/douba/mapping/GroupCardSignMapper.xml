@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dopakoala.douba.dao.IGroupCardSignDao">
+	<resultMap id="ResultMap" type="com.dopakoala.douba.entity.GroupCardSign">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="start_id" jdbcType="INTEGER" property="startId" />
+		<result column="end_id" jdbcType="INTEGER" property="endId" />
+		<result column="totalmiles" jdbcType="DECIMAL" property="totalmiles" />
+		<result column="sign_uid" jdbcType="INTEGER" property="signUid" />
+		<result column="curr_signid" jdbcType="INTEGER" property="currSignid" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_user" jdbcType="INTEGER" property="createUser" />
+		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+		<result column="modify_account" jdbcType="INTEGER" property="modifyAccount" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="gid" jdbcType="INTEGER" property="gid" />
+		<result column="start_time" jdbcType="INTEGER" property="startTime" />
+		<result column="end_time" jdbcType="INTEGER" property="endTime" />
+		<result column="deadline" jdbcType="TIMESTAMP" property="deadline" />
+		<result column="header" jdbcType="LONGVARCHAR" property="header" />
+		<result column="footer" jdbcType="LONGVARCHAR" property="footer" />
+		<result column="sign_list" jdbcType="LONGVARCHAR" property="signList" />
+		<result column="time" jdbcType="INTEGER" property="time" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, start_id, end_id, totalmiles, sign_uid, curr_signid,
+		create_time,
+		create_user,
+		modify_time, modify_account, status, gid,
+		start_time, end_time, deadline,
+		header, footer, sign_list
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="ResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from group_card_sign
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectLasted" parameterType="java.lang.Integer"
+		resultMap="ResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from group_card_sign
+		where gid = #{gid,jdbcType=INTEGER}
+		order by
+		create_time desc limit 0,1
+	</select>
+	<select id="selectByTimeGid" parameterType="com.dopakoala.douba.entity.GroupCardSign"
+		resultMap="ResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from group_card_sign
+		where #{time,jdbcType=INTEGER} between start_time
+		and end_time and gid = #{gid,jdbcType=INTEGER}
+		order by
+		create_time desc
+		limit 0,1
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		group_card_sign
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.dopakoala.douba.entity.GroupCardSign">
+		insert into group_card_sign
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="startId != null">
+				start_id,
+			</if>
+			<if test="endId != null">
+				end_id,
+			</if>
+			<if test="totalmiles != null">
+				totalmiles,
+			</if>
+			<if test="signUid != null">
+				sign_uid,
+			</if>
+			<if test="currSignid != null">
+				curr_signid,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="modifyTime != null">
+				modify_time,
+			</if>
+			<if test="modifyAccount != null">
+				modify_account,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="gid != null">
+				gid,
+			</if>
+			<if test="startTime != null">
+				start_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
+			</if>
+			<if test="deadline != null">
+				deadline,
+			</if>
+			<if test="header != null">
+				header,
+			</if>
+			<if test="footer != null">
+				footer,
+			</if>
+			<if test="signList != null">
+				sign_list,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="startId != null">
+				#{startId,jdbcType=INTEGER},
+			</if>
+			<if test="endId != null">
+				#{endId,jdbcType=INTEGER},
+			</if>
+			<if test="totalmiles != null">
+				#{totalmiles,jdbcType=DECIMAL},
+			</if>
+			<if test="signUid != null">
+				#{signUid,jdbcType=INTEGER},
+			</if>
+			<if test="currSignid != null">
+				#{currSignid,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				#{modifyAccount,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="gid != null">
+				#{gid,jdbcType=INTEGER},
+			</if>
+			<if test="startTime != null">
+				#{startTime,jdbcType=INTEGER},
+			</if>
+			<if test="endTime != null">
+				#{endTime,jdbcType=INTEGER},
+			</if>
+			<if test="deadline != null">
+				#{deadline,jdbcType=TIMESTAMP},
+			</if>
+			<if test="header != null">
+				#{header,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="footer != null">
+				#{footer,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="signList != null">
+				#{signList,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dopakoala.douba.entity.GroupCardSign">
+		update group_card_sign
+		<set>
+			<if test="startId != null">
+				start_id = #{startId,jdbcType=INTEGER},
+			</if>
+			<if test="endId != null">
+				end_id = #{endId,jdbcType=INTEGER},
+			</if>
+			<if test="totalmiles != null">
+				totalmiles = #{totalmiles,jdbcType=DECIMAL},
+			</if>
+			<if test="signUid != null">
+				sign_uid = #{signUid,jdbcType=INTEGER},
+			</if>
+			<if test="currSignid != null">
+				curr_signid = #{currSignid,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyAccount != null">
+				modify_account = #{modifyAccount,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="gid != null">
+				gid = #{gid,jdbcType=INTEGER},
+			</if>
+			<if test="startTime != null">
+				start_time = #{startTime,jdbcType=INTEGER},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime,jdbcType=INTEGER},
+			</if>
+			<if test="deadline != null">
+				deadline = #{deadline,jdbcType=TIMESTAMP},
+			</if>
+			<if test="header != null">
+				header = #{header,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="footer != null">
+				footer = #{footer,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="signList != null">
+				sign_list = #{signList,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>
