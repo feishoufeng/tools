@@ -1,0 +1,40 @@
+entity:
+	@Transient
+	private Integer page;
+
+	@Transient
+	private Integer pagesize;
+
+	@Transient
+	private String sqlWhere;
+	
+	@Transient
+	private Timestamp date1;
+
+	@Transient
+	private Timestamp date2;
+
+	@Transient
+	private String dateStr;
+
+mapper:
+	<result column="date1" jdbcType="TIMESTAMP" property="date1" />
+	<result column="date2" jdbcType="TIMESTAMP" property="date2" />
+	<result column="page" jdbcType="INTEGER" property="page" />
+	<result column="pagesize" jdbcType="INTEGER" property="pagesize" />
+	<result column="sqlWhere" jdbcType="VARCHAR" property="sqlWhere" />
+
+
+	<if test="date1 != null and date2 != null">
+		and l.create_time between #{date1,jdbcType=TIMESTAMP} and
+		#{date2,jdbcType=TIMESTAMP}
+	</if>
+	<if test="sqlWhere != null">
+		${sqlWhere}
+	</if>
+	order by
+	create_time desc
+	<if test="page > 0 || pagesize > 0">
+		limit
+		#{page,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+	</if>
