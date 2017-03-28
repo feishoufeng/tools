@@ -56,7 +56,7 @@ public class CreateThumbnail {
 			String[] strs = formatStr.split("<<");
 			for (String str : strs) {
 				if (str.contains("<img")) {
-					String imgIndex = str.substring(str.lastIndexOf("/") + 1, str.indexOf(".gif"));
+//					String imgIndex = str.substring(str.lastIndexOf("/") + 1, str.indexOf(".gif"));
 
 					int code = 0xa4565;
 					char[] chars = Character.toChars(code);
