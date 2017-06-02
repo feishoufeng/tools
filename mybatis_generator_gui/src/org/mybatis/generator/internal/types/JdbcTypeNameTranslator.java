@@ -61,7 +61,7 @@ public class JdbcTypeNameTranslator {
         typeToName.put(Types.SMALLINT, "INTEGER"); //$NON-NLS-1$
         typeToName.put(Types.STRUCT, "STRUCT"); //$NON-NLS-1$
         typeToName.put(Types.TIME, "TIME"); //$NON-NLS-1$
-        typeToName.put(Types.TIMESTAMP, "TIMESTAMP"); //$NON-NLS-1$
+        typeToName.put(Types.TIMESTAMP, "DATE"); //$NON-NLS-1$
         typeToName.put(Types.TINYINT, "INTEGER"); //$NON-NLS-1$
         typeToName.put(Types.VARBINARY, "VARBINARY"); //$NON-NLS-1$
         typeToName.put(Types.VARCHAR, "VARCHAR"); //$NON-NLS-1$

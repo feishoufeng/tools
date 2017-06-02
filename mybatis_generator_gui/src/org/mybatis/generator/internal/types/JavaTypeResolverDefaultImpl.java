@@ -15,7 +15,6 @@
  */
 package org.mybatis.generator.internal.types;
 
-import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.Date;
 import java.util.HashMap;
@@ -112,7 +111,7 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
         typeMap.put(Types.TIME, new JdbcTypeInformation("TIME", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Date.class.getName())));
         typeMap.put(Types.TIMESTAMP, new JdbcTypeInformation("TIMESTAMP", //$NON-NLS-1$
-                new FullyQualifiedJavaType(Timestamp.class.getName())));
+                new FullyQualifiedJavaType(Date.class.getName())));
         typeMap.put(Types.TINYINT, new JdbcTypeInformation("TINYINT", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Integer.class.getName())));
         typeMap.put(Types.VARBINARY, new JdbcTypeInformation("VARBINARY", //$NON-NLS-1$
