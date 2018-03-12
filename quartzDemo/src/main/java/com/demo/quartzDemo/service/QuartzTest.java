@@ -1,4 +1,4 @@
-package quartzDemo;
+package com.demo.quartzDemo.service;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -92,7 +92,7 @@ public class QuartzTest {
 	}
 
 	public static void main(String[] args) throws SchedulerException, ParseException {
-		System.out.println(addJob("张科3", MyJob.class, "我是你的人", 10, "aaa"));
+		// System.out.println(addJob("张科3", MyJob.class, "我是你的人", 10, "aaa"));
 		// resumeJob();
 	}
 

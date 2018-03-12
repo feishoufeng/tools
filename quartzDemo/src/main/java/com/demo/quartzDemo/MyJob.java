@@ -1,4 +1,4 @@
-package quartzDemo;
+package com.demo.quartzDemo;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
