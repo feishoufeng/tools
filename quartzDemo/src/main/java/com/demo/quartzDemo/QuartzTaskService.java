@@ -29,7 +29,7 @@ public class QuartzTaskService implements Job {
 		try {
 			r = new Robot();
 			System.out.println("延时前:" + sdf.format(new Date()));
-			r.delay(10000);
+			r.delay(6000);
 			System.out.println("延时后:" + sdf.format(new Date()));
 		} catch (AWTException e) {
 			// TODO Auto-generated catch block
