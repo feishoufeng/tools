@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- <mvc:annotation-driven /> -->
+	<mvc:annotation-driven
+		ignore-default-model-on-redirect="true">
+		<mvc:message-converters register-defaults="false">
+			<bean
+				class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes" value="text/plain;charset=UTF-8" />
+			</bean>
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="supportedMediaTypes" value="text/plain;charset=UTF-8" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+
+	<context:component-scan base-package="cc.zytrip.controller">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+
+	<mvc:default-servlet-handler />
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+
+	<!-- <mvc:interceptors> -->
+	<!-- <mvc:interceptor> -->
+	<!-- <mvc:mapping path="/**"/> -->
+	<!-- <bean class="cn.howso.interceptor.SessionInterceptor" > -->
+	<!-- <property name="allowUrls"> -->
+	<!-- <list> -->
+	<!-- 如果请求中包含以下路径，则不进行拦截 -->
+	<!-- <value>/index</value> -->
+	<!-- 平台端邮箱登陆 -->
+	<!-- <value>/login</value> -->
+	<!-- 平台端手机登陆 -->
+	<!-- <value>/loginWebMoblie</value> -->
+	<!-- 平台端端，考试用户导入，身份证登陆 -->
+	<!-- <value>/loginIndentify</value> -->
+	<!-- 平台端端企业登陆页面跳转 -->
+	<!-- <value>/index/com</value> -->
+	<!-- 平台端端企业登陆 -->
+	<!-- <value>/CoLogin/loginCheck</value> -->
+	<!-- </list> -->
+	<!-- </property> -->
+	<!-- </bean> -->
+	<!-- </mvc:interceptor> -->
+	<!-- </mvc:interceptors> -->
+
+
+
+
+	<!-- 支持上传文件 -->
+	<!--<bean id="multipartResolver" -->
+	<!--class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> -->
+	<!--<property name="maxUploadSize" value="524288000" /> -->
+	<!--<property name="resolveLazily" value="true" /> -->
+	<!--</bean> -->
+</beans> 

@@ -1,0 +1,51 @@
+body {
+    background-color: #f8f8f8;
+    font-family: "Open Sans";
+}
+
+h1{
+    font-size: 35px;
+    font-family: "Open Sans";
+}
+
+.line-down {
+    border-bottom: 1px solid #c4c4c4;
+    margin-bottom: 15px;
+    min-height: 30px;
+}
+.page-continer{
+    background-color: #ffffff;
+    min-height: 900px;
+}
+.graphs {
+    background: #f2f4f8 none repeat scroll 0 0;
+    font-family: "Roboto",sans-serif;
+    padding: 2em 1em;
+}
+
+
+/*.form-horizontal .form-group::before, .form-horizontal .form-group::after {*/
+    /*content: " ";*/
+    /*display: table;*/
+/*}*/
+.form-horizontal .control-label, .form-horizontal .radio, .form-horizontal .checkbox, .form-horizontal .radio-inline, .form-horizontal .checkbox-inline {
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-top: 7px;
+}
+/*.form-control {*/
+    /*background-color: #ffffff;*/
+    /*background-image: none;*/
+    /*border: 1px solid #cccccc;*/
+    /*border-radius: 4px;*/
+    /*box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;*/
+    /*color: #555555;*/
+    /*display: block;*/
+    /*font-size: 14px;*/
+    /*height: 34px;*/
+    /*line-height: 1.42857;*/
+    /*padding: 6px 12px;*/
+    /*transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;*/
+    /*vertical-align: middle;*/
+    /*width: 100%;*/
+/*}*/
